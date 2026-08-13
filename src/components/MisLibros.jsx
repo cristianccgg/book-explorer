@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const MisLibros = ({ misLibros, onEliminar }) => {
   return (
     <section>
@@ -27,6 +29,13 @@ const MisLibros = ({ misLibros, onEliminar }) => {
                 {libro.author_name?.join(", ")}
               </p>
             </div>
+            <Link
+              to={`/libro/${libro.key.split("/").at(-1)}`}
+              type="button"
+              className="mx-3 block text-center rounded-lg bg-blue-600 px-2 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 active:scale-95"
+            >
+              Abrir Detalle
+            </Link>
             <button
               onClick={() => onEliminar(libro.key)}
               type="button"
