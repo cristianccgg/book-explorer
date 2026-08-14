@@ -6,45 +6,56 @@ const ResultadosBusqueda = ({
   misLibros,
   onAgregar,
 }) => {
+  const listaLibros = Array.isArray(libros) ? libros : [];
+  const listaMisLibros = Array.isArray(misLibros) ? misLibros : [];
+
   return (
     <section>
       <h2 className="my-6 text-2xl font-bold text-slate-800">
         Resultados de búsqueda
       </h2>
+
       {loading && (
         <div className="rounded-lg bg-white p-6 text-center text-slate-600 shadow-sm">
           Cargando libros...
         </div>
       )}
+
       {error && (
         <div className="rounded-lg bg-red-50 p-6 text-center text-red-700">
           No se pudieron cargar los libros.
         </div>
       )}
-      {libros.length === 0 && !buscando && (
+
+      {!loading && listaLibros.length === 0 && !buscando && (
         <p className="text-center text-slate-500">
           Realiza una búsqueda de libros para comenzar.
         </p>
       )}
-      {libros.length === 0 && buscando && !loading && (
+
+      {!loading && listaLibros.length === 0 && buscando && (
         <p className="text-center text-slate-500">
           No hay resultados para tu búsqueda.
         </p>
       )}
+
       <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-        {libros.map((libro) => {
-          const existe = misLibros.some(
-            (libroGuardado) => libroGuardado.key === libro.key,
+        {listaLibros.map((libro, index) => {
+          if (!libro) return null;
+
+          const existe = listaMisLibros.some(
+            (libroGuardado) => libroGuardado?.key === libro.key,
           );
+
           return (
             <div
-              key={libro.key}
+              key={libro.key ?? index}
               className="overflow-hidden flex flex-col rounded-xl bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
             >
               {libro.cover_i ? (
                 <img
                   src={`https://covers.openlibrary.org/b/id/${libro.cover_i}-M.jpg`}
-                  alt={libro.title}
+                  alt={libro.title ?? "Portada de libro"}
                   className="h-72 w-full object-cover"
                 />
               ) : (
@@ -52,12 +63,16 @@ const ResultadosBusqueda = ({
                   Imagen no encontrada
                 </div>
               )}
+
               <div className="p-4 flex-1">
-                <p className="font-semibold text-slate-800">{libro.title}</p>
+                <p className="font-semibold text-slate-800">
+                  {libro.title ?? "Título desconocido"}
+                </p>
                 <p className="mt-1 text-sm text-slate-500">
-                  {libro.author_name?.join(", ")}
+                  {libro.author_name?.join(", ") ?? "Autor desconocido"}
                 </p>
               </div>
+
               <button
                 onClick={() => onAgregar(libro)}
                 type="button"
