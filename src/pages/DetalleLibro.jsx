@@ -24,16 +24,6 @@ const DetalleLibro = ({
   const libroSeleccionado = misLibros.find((libro) => libro.key === key);
   const [notaSeleccionada, setNotaSeleccionada] = useState(null);
 
-  const progreso = libroSeleccionado?.totalPaginas
-    ? libroSeleccionado.paginaActual / libroSeleccionado.totalPaginas
-    : 0;
-
-  const porcentaje = (progreso * 100).toFixed(2);
-
-  const paginasRestantes = libroSeleccionado?.totalPaginas
-    ? libroSeleccionado.totalPaginas - libroSeleccionado.paginaActual
-    : 0;
-
   useEffect(() => {
     const obtenerLibroDetalle = async () => {
       try {
@@ -53,13 +43,15 @@ const DetalleLibro = ({
     obtenerLibroDetalle();
   }, [key]);
 
-  const progreso =
-    libroSeleccionado.paginaActual / libroSeleccionado.totalPaginas;
+  const progreso = libroSeleccionado?.totalPaginas
+    ? libroSeleccionado.paginaActual / libroSeleccionado.totalPaginas
+    : 0;
 
   const porcentaje = (progreso * 100).toFixed(2);
 
-  const paginasRestantes =
-    libroSeleccionado.totalPaginas - libroSeleccionado.paginaActual;
+  const paginasRestantes = libroSeleccionado?.totalPaginas
+    ? libroSeleccionado.totalPaginas - libroSeleccionado.paginaActual
+    : 0;
 
   if (loading) {
     return (
