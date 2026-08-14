@@ -24,6 +24,16 @@ const DetalleLibro = ({
   const libroSeleccionado = misLibros.find((libro) => libro.key === key);
   const [notaSeleccionada, setNotaSeleccionada] = useState(null);
 
+  const progreso = libroSeleccionado?.totalPaginas
+    ? libroSeleccionado.paginaActual / libroSeleccionado.totalPaginas
+    : 0;
+
+  const porcentaje = (progreso * 100).toFixed(2);
+
+  const paginasRestantes = libroSeleccionado?.totalPaginas
+    ? libroSeleccionado.totalPaginas - libroSeleccionado.paginaActual
+    : 0;
+
   useEffect(() => {
     const obtenerLibroDetalle = async () => {
       try {
@@ -88,10 +98,10 @@ const DetalleLibro = ({
           <div className="grid md:grid-cols-[280px_1fr]">
             {/* PORTADA */}
             <div className="bg-slate-200">
-              {libroDetalle.covers.length > 0 ? (
+              {libroDetalle?.covers?.length > 0 ? (
                 <img
                   src={`https://covers.openlibrary.org/b/id/${libroDetalle.covers[0]}-M.jpg`}
-                  alt={libroDetalle.title}
+                  alt={libroDetalle.title ?? "Portada de libro"}
                   className="h-96 w-full object-cover md:h-full"
                 />
               ) : (
